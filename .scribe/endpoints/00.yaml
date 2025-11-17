@@ -593,7 +593,7 @@ endpoints:
         name: product
         description: ''
         required: true
-        example: lazy_task
+        example: appza
         type: string
         enumValues:
           - appza
@@ -607,7 +607,7 @@ endpoints:
         name: appza_action
         description: ''
         required: true
-        example: license_deactivate
+        example: plugin_delete
         type: string
         enumValues:
           - license_deactivate
@@ -628,8 +628,8 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       site_url: 'http://kunze.biz/iste-laborum-eius-est-dolor.html'
-      product: lazy_task
-      appza_action: license_deactivate
+      product: appza
+      appza_action: plugin_delete
       license_key: consequatur
     fileParameters: []
     responses:
@@ -2129,7 +2129,7 @@ endpoints:
         name: product
         description: ''
         required: true
-        example: fcom_mobile
+        example: lazy_task
         type: string
         enumValues:
           - appza
@@ -2140,13 +2140,13 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       site_url: 'http://kunze.biz/iste-laborum-eius-est-dolor.html'
-      product: fcom_mobile
+      product: lazy_task
     fileParameters: []
     responses:
       -
         custom: []
         status: 404
-        content: '{"status":404,"message":"Plugin not installed or no license found.","license_type":"invalid","data":[],"popup_message":[{"type":"no_license","message":"<p>You do not have a valid licence. Please provide a valid licence key<\/p>"},{"type":"free_trial_grace_admin","message":"<p>Your Free Trial will end soon. You can get the full version of Fluent Community Mobile App here.<\/p>\r\n<div style=\"text-align:center;\">\r\n  <a href=\"https:\/\/lazycoders.co\/fluentcommunitymobile\/?product_name=fcom_mobile\" \r\n     style=\"display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\">\r\n   Fluent Community Mobile\r\n  <\/a>\r\n<\/div>"},{"type":"free_trial_grace_user","message":"<p>The Free Trial period of this app will end soon. Please contact your community admin for mobile app access continuity.<\/p>"},{"type":"free_trial_ended_admin","message":"<p>Your Free Trial has ended. You can get the full version of Fluent Community Mobile App here.<\/p>\r\n<div style=\"text-align:center;\">\r\n  <a href=\"https:\/\/lazycoders.co\/fluentcommunitymobile\/?product_name=fcom_mobile\" \r\n     style=\"display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\">\r\n   Fluent Community Mobile\r\n  <\/a>\r\n<\/div>"},{"type":"free_trial_ended_user","message":"<p>The Free Trial period of this app has ended. Please contact your community admin for mobile app access.<\/p>"},{"type":"license_expiring_admin","message":"<p>Your License for Fluent Community Mobile is expiring soon. Please extend your license from LazyCoders customer portal.<\/p>\r\n<div style=\"text-align:center;\">\r\n  <a href=\"https:\/\/lazycoders.co\/customer-portal\/\" \r\n     style=\"display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\">\r\n Customer Portal\r\n  <\/a>\r\n<\/div>"},{"type":"license_expired_grace_admin","message":"<p>Your License for Fluent Community Mobile has expired. Please extend your license from LazyCoders customer portal.<\/p>\r\n<div style=\"text-align:center;\">\r\n  <a href=\"https:\/\/lazycoders.co\/customer-portal\/\" \r\n     style=\"display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\">\r\n  Customer Portal\r\n  <\/a>\r\n<\/div>"},{"type":"license_expired_grace_user","message":"<p>License has expired for this community. App access will be revoked soon. Please contact your community admin.<\/p>"},{"type":"license_expired_final_admin","message":"<p>Your License for Fluent Community Mobile has expired. Please extend your license from LazyCoders customer portal.<\/p>\r\n<div style=\"text-align:center;\">\r\n  <a href=\"https:\/\/lazycoders.co\/customer-portal\/\" \r\n     style=\"display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\">\r\n Customer Portal\r\n  <\/a>\r\n<\/div>"},{"type":"license_expired_final_user","message":"<p>Access restricted due to expired license. Please contact your community admin.<\/p>"}]}'
+        content: '{"status":404,"message":"Plugin not installed or no license found.","license_type":"invalid","data":[],"popup_message":[{"type":"no_license","message":"<p>You do not have a valid licence. Please provide a valid licence key<\/p>"},{"type":"free_trial_grace_admin","message":"<p>Your Free Trial will end soon. You can get the full version of LazyTasks App here.<\/p>\r\n<div style=\"text-align:center;\">\r\n  <a href=\"https:\/\/lazycoders.co\/lazytasks\/?product_name=lazy_task\" \r\n     style=\"display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\">\r\n   LazyTasks\r\n  <\/a>\r\n<\/div>"},{"type":"free_trial_grace_user","message":"<p>The Free Trial period of this app will end soon. Please contact your admin for mobile app access continuity.<\/p>"},{"type":"free_trial_ended_admin","message":"<p>Your Free Trial has ended. You can get the full version of LazyTasks App here.<\/p>\r\n<div style=\"text-align:center;\">\r\n  <a href=\"https:\/\/lazycoders.co\/lazytasks\/?product_name=lazy_task\" \r\n     style=\"display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\">\r\n LazyTasks\r\n  <\/a>\r\n<\/div>"},{"type":"free_trial_ended_user","message":"<p>The Free Trial period of this app has ended. Please contact your  admin for mobile app access.<\/p>"},{"type":"license_expiring_admin","message":"<p>Your License for LazyTasks Premium is expiring soon. Please extend your license from LazyCoders customer portal.<\/p>\r\n<div style=\"text-align:center;\">\r\n  <a href=\"https:\/\/lazycoders.co\/customer-portal\/\" \r\n     style=\"display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\">\r\n Customer Portal\r\n  <\/a>\r\n<\/div>"},{"type":"license_expired_grace_admin","message":"<p>Your License for LazyTasks  has expired. Please extend your license from LazyCoders customer portal.<\/p>\r\n<div style=\"text-align:center;\">\r\n  <a href=\"https:\/\/lazycoders.co\/customer-portal\/\" \r\n     style=\"display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\">\r\n  Customer Portal\r\n  <\/a>\r\n<\/div>"},{"type":"license_expired_grace_user","message":"<p>License has expired for LazyTasks Premium. App access will be revoked soon. Please contact your  admin.<\/p>"},{"type":"license_expired_final_admin","message":"<p>Your License for LazyTasks Premium has expired. Please extend your license from LazyCoders customer portal.<\/p>\r\n<div style=\"text-align:center;\">\r\n  <a href=\"https:\/\/lazycoders.co\/customer-portal\/\" \r\n     style=\"display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\">\r\n Customer Portal\r\n  <\/a>\r\n<\/div>"},{"type":"license_expired_final_user","message":"<p>Access restricted due to expired license. Please contact your  admin.<\/p>"}]}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
@@ -3465,7 +3465,7 @@ endpoints:
         name: product
         description: ''
         required: true
-        example: fcom_mobile
+        example: appza
         type: string
         enumValues:
           - appza
@@ -3479,7 +3479,7 @@ endpoints:
         name: appza_action
         description: ''
         required: true
-        example: license_deactivate
+        example: plugin_delete
         type: string
         enumValues:
           - license_deactivate
@@ -3500,8 +3500,8 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       site_url: 'http://kunze.biz/iste-laborum-eius-est-dolor.html'
-      product: fcom_mobile
-      appza_action: license_deactivate
+      product: appza
+      appza_action: plugin_delete
       license_key: consequatur
     fileParameters: []
     responses:

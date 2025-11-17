@@ -1819,8 +1819,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Accept: application/json" \
     --data "{
     \"site_url\": \"http:\\/\\/kunze.biz\\/iste-laborum-eius-est-dolor.html\",
-    \"product\": \"lazy_task\",
-    \"appza_action\": \"license_deactivate\",
+    \"product\": \"appza\",
+    \"appza_action\": \"plugin_delete\",
     \"license_key\": \"consequatur\"
 }"
 </code></pre></div>
@@ -1838,8 +1838,8 @@ const headers = {
 
 let body = {
     "site_url": "http:\/\/kunze.biz\/iste-laborum-eius-est-dolor.html",
-    "product": "lazy_task",
-    "appza_action": "license_deactivate",
+    "product": "appza",
+    "appza_action": "plugin_delete",
     "license_key": "consequatur"
 };
 
@@ -1962,10 +1962,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="product"                data-endpoint="GETapi-appza-v0-license-deactivate"
-               value="lazy_task"
+               value="appza"
                data-component="body">
     <br>
-<p>Example: <code>lazy_task</code></p>
+<p>Example: <code>appza</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>appza</code></li> <li><code>lazy_task</code></li> <li><code>fcom_mobile</code></li></ul>
         </div>
@@ -1976,10 +1976,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="appza_action"                data-endpoint="GETapi-appza-v0-license-deactivate"
-               value="license_deactivate"
+               value="plugin_delete"
                data-component="body">
     <br>
-<p>Example: <code>license_deactivate</code></p>
+<p>Example: <code>plugin_delete</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>license_deactivate</code></li> <li><code>plugin_delete</code></li></ul>
         </div>
@@ -5595,7 +5595,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Accept: application/json" \
     --data "{
     \"site_url\": \"http:\\/\\/kunze.biz\\/iste-laborum-eius-est-dolor.html\",
-    \"product\": \"fcom_mobile\"
+    \"product\": \"lazy_task\"
 }"
 </code></pre></div>
 
@@ -5612,7 +5612,7 @@ const headers = {
 
 let body = {
     "site_url": "http:\/\/kunze.biz\/iste-laborum-eius-est-dolor.html",
-    "product": "fcom_mobile"
+    "product": "lazy_task"
 };
 
 fetch(url, {
@@ -5649,39 +5649,39 @@ access-control-allow-origin: *
         },
         {
             &quot;type&quot;: &quot;free_trial_grace_admin&quot;,
-            &quot;message&quot;: &quot;&lt;p&gt;Your Free Trial will end soon. You can get the full version of Fluent Community Mobile App here.&lt;/p&gt;\r\n&lt;div style=\&quot;text-align:center;\&quot;&gt;\r\n  &lt;a href=\&quot;https://lazycoders.co/fluentcommunitymobile/?product_name=fcom_mobile\&quot; \r\n     style=\&quot;display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\&quot;&gt;\r\n   Fluent Community Mobile\r\n  &lt;/a&gt;\r\n&lt;/div&gt;&quot;
+            &quot;message&quot;: &quot;&lt;p&gt;Your Free Trial will end soon. You can get the full version of LazyTasks App here.&lt;/p&gt;\r\n&lt;div style=\&quot;text-align:center;\&quot;&gt;\r\n  &lt;a href=\&quot;https://lazycoders.co/lazytasks/?product_name=lazy_task\&quot; \r\n     style=\&quot;display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\&quot;&gt;\r\n   LazyTasks\r\n  &lt;/a&gt;\r\n&lt;/div&gt;&quot;
         },
         {
             &quot;type&quot;: &quot;free_trial_grace_user&quot;,
-            &quot;message&quot;: &quot;&lt;p&gt;The Free Trial period of this app will end soon. Please contact your community admin for mobile app access continuity.&lt;/p&gt;&quot;
+            &quot;message&quot;: &quot;&lt;p&gt;The Free Trial period of this app will end soon. Please contact your admin for mobile app access continuity.&lt;/p&gt;&quot;
         },
         {
             &quot;type&quot;: &quot;free_trial_ended_admin&quot;,
-            &quot;message&quot;: &quot;&lt;p&gt;Your Free Trial has ended. You can get the full version of Fluent Community Mobile App here.&lt;/p&gt;\r\n&lt;div style=\&quot;text-align:center;\&quot;&gt;\r\n  &lt;a href=\&quot;https://lazycoders.co/fluentcommunitymobile/?product_name=fcom_mobile\&quot; \r\n     style=\&quot;display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\&quot;&gt;\r\n   Fluent Community Mobile\r\n  &lt;/a&gt;\r\n&lt;/div&gt;&quot;
+            &quot;message&quot;: &quot;&lt;p&gt;Your Free Trial has ended. You can get the full version of LazyTasks App here.&lt;/p&gt;\r\n&lt;div style=\&quot;text-align:center;\&quot;&gt;\r\n  &lt;a href=\&quot;https://lazycoders.co/lazytasks/?product_name=lazy_task\&quot; \r\n     style=\&quot;display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\&quot;&gt;\r\n LazyTasks\r\n  &lt;/a&gt;\r\n&lt;/div&gt;&quot;
         },
         {
             &quot;type&quot;: &quot;free_trial_ended_user&quot;,
-            &quot;message&quot;: &quot;&lt;p&gt;The Free Trial period of this app has ended. Please contact your community admin for mobile app access.&lt;/p&gt;&quot;
+            &quot;message&quot;: &quot;&lt;p&gt;The Free Trial period of this app has ended. Please contact your  admin for mobile app access.&lt;/p&gt;&quot;
         },
         {
             &quot;type&quot;: &quot;license_expiring_admin&quot;,
-            &quot;message&quot;: &quot;&lt;p&gt;Your License for Fluent Community Mobile is expiring soon. Please extend your license from LazyCoders customer portal.&lt;/p&gt;\r\n&lt;div style=\&quot;text-align:center;\&quot;&gt;\r\n  &lt;a href=\&quot;https://lazycoders.co/customer-portal/\&quot; \r\n     style=\&quot;display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\&quot;&gt;\r\n Customer Portal\r\n  &lt;/a&gt;\r\n&lt;/div&gt;&quot;
+            &quot;message&quot;: &quot;&lt;p&gt;Your License for LazyTasks Premium is expiring soon. Please extend your license from LazyCoders customer portal.&lt;/p&gt;\r\n&lt;div style=\&quot;text-align:center;\&quot;&gt;\r\n  &lt;a href=\&quot;https://lazycoders.co/customer-portal/\&quot; \r\n     style=\&quot;display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\&quot;&gt;\r\n Customer Portal\r\n  &lt;/a&gt;\r\n&lt;/div&gt;&quot;
         },
         {
             &quot;type&quot;: &quot;license_expired_grace_admin&quot;,
-            &quot;message&quot;: &quot;&lt;p&gt;Your License for Fluent Community Mobile has expired. Please extend your license from LazyCoders customer portal.&lt;/p&gt;\r\n&lt;div style=\&quot;text-align:center;\&quot;&gt;\r\n  &lt;a href=\&quot;https://lazycoders.co/customer-portal/\&quot; \r\n     style=\&quot;display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\&quot;&gt;\r\n  Customer Portal\r\n  &lt;/a&gt;\r\n&lt;/div&gt;&quot;
+            &quot;message&quot;: &quot;&lt;p&gt;Your License for LazyTasks  has expired. Please extend your license from LazyCoders customer portal.&lt;/p&gt;\r\n&lt;div style=\&quot;text-align:center;\&quot;&gt;\r\n  &lt;a href=\&quot;https://lazycoders.co/customer-portal/\&quot; \r\n     style=\&quot;display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\&quot;&gt;\r\n  Customer Portal\r\n  &lt;/a&gt;\r\n&lt;/div&gt;&quot;
         },
         {
             &quot;type&quot;: &quot;license_expired_grace_user&quot;,
-            &quot;message&quot;: &quot;&lt;p&gt;License has expired for this community. App access will be revoked soon. Please contact your community admin.&lt;/p&gt;&quot;
+            &quot;message&quot;: &quot;&lt;p&gt;License has expired for LazyTasks Premium. App access will be revoked soon. Please contact your  admin.&lt;/p&gt;&quot;
         },
         {
             &quot;type&quot;: &quot;license_expired_final_admin&quot;,
-            &quot;message&quot;: &quot;&lt;p&gt;Your License for Fluent Community Mobile has expired. Please extend your license from LazyCoders customer portal.&lt;/p&gt;\r\n&lt;div style=\&quot;text-align:center;\&quot;&gt;\r\n  &lt;a href=\&quot;https://lazycoders.co/customer-portal/\&quot; \r\n     style=\&quot;display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\&quot;&gt;\r\n Customer Portal\r\n  &lt;/a&gt;\r\n&lt;/div&gt;&quot;
+            &quot;message&quot;: &quot;&lt;p&gt;Your License for LazyTasks Premium has expired. Please extend your license from LazyCoders customer portal.&lt;/p&gt;\r\n&lt;div style=\&quot;text-align:center;\&quot;&gt;\r\n  &lt;a href=\&quot;https://lazycoders.co/customer-portal/\&quot; \r\n     style=\&quot;display:inline-block;\r\n            padding:10px 16px;\r\n            background-color:#1976d2;\r\n            color:#ffffff;\r\n            text-decoration:none;\r\n            border-radius:8px;\r\n            font-weight:bold;\&quot;&gt;\r\n Customer Portal\r\n  &lt;/a&gt;\r\n&lt;/div&gt;&quot;
         },
         {
             &quot;type&quot;: &quot;license_expired_final_user&quot;,
-            &quot;message&quot;: &quot;&lt;p&gt;Access restricted due to expired license. Please contact your community admin.&lt;/p&gt;&quot;
+            &quot;message&quot;: &quot;&lt;p&gt;Access restricted due to expired license. Please contact your  admin.&lt;/p&gt;&quot;
         }
     ]
 }</code>
@@ -5778,10 +5778,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="product"                data-endpoint="GETapi-appza-v1-app-license-check"
-               value="fcom_mobile"
+               value="lazy_task"
                data-component="body">
     <br>
-<p>Example: <code>fcom_mobile</code></p>
+<p>Example: <code>lazy_task</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>appza</code></li> <li><code>lazy_task</code></li> <li><code>fcom_mobile</code></li></ul>
         </div>
@@ -9017,8 +9017,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Accept: application/json" \
     --data "{
     \"site_url\": \"http:\\/\\/kunze.biz\\/iste-laborum-eius-est-dolor.html\",
-    \"product\": \"fcom_mobile\",
-    \"appza_action\": \"license_deactivate\",
+    \"product\": \"appza\",
+    \"appza_action\": \"plugin_delete\",
     \"license_key\": \"consequatur\"
 }"
 </code></pre></div>
@@ -9036,8 +9036,8 @@ const headers = {
 
 let body = {
     "site_url": "http:\/\/kunze.biz\/iste-laborum-eius-est-dolor.html",
-    "product": "fcom_mobile",
-    "appza_action": "license_deactivate",
+    "product": "appza",
+    "appza_action": "plugin_delete",
     "license_key": "consequatur"
 };
 
@@ -9160,10 +9160,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="product"                data-endpoint="GETapi-appza-v2-license-deactivate"
-               value="fcom_mobile"
+               value="appza"
                data-component="body">
     <br>
-<p>Example: <code>fcom_mobile</code></p>
+<p>Example: <code>appza</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>appza</code></li> <li><code>lazy_task</code></li> <li><code>fcom_mobile</code></li></ul>
         </div>
@@ -9174,10 +9174,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="appza_action"                data-endpoint="GETapi-appza-v2-license-deactivate"
-               value="license_deactivate"
+               value="plugin_delete"
                data-component="body">
     <br>
-<p>Example: <code>license_deactivate</code></p>
+<p>Example: <code>plugin_delete</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>license_deactivate</code></li> <li><code>plugin_delete</code></li></ul>
         </div>

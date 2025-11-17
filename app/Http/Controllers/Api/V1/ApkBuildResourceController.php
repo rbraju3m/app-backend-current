@@ -256,22 +256,8 @@ class ApkBuildResourceController extends Controller
             return $jsonResponse(Response::HTTP_NOT_FOUND, 'Domain or license key is incorrect');
         }
 
-        /*$p8Dir = public_path('/upload/build-apk/p8file/');
-        File::ensureDirectoryExists($p8Dir, 0777, true);
-
-        $p8FileName = 'key_' . uniqid() . '.p8';
-        File::put($p8Dir . $p8FileName, $input['ios_p8_file_content']);
-
-        $findSiteUrl->update([
-            'ios_issuer_id' => $input['ios_issuer_id'],
-            'ios_key_id' => $input['ios_key_id'],
-            'team_id' => $input['ios_team_id'],
-            'ios_p8_file_content' => $p8FileName,
-        ]);*/
-
         $directory = 'app-file/p8file';
         $disk = 'r2';
-
 
         // Generate file name
         $p8FileName = 'key_' . uniqid() . '.p8';
