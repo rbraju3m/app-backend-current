@@ -13,7 +13,7 @@ class ThemePage extends Model
     public $timestamps = true;
     protected $guarded = ['id'];
     protected $dates = ['created_at', 'updated_at'];
-    protected $fillable = [ 'theme_id', 'page_id','persistent_footer_buttons','background_color','border_color','border_radius','sort_order'];
+    protected $fillable = [ 'theme_id', 'page_id','persistent_footer_buttons','background_color','border_color','border_radius','sort_order','screen_status','static_screen_message',''];
 
     public function page(){
         return $this->belongsTo(Page::class,'page_id','id');

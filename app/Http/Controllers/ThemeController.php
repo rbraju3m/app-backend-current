@@ -266,6 +266,9 @@ class ThemeController extends Controller
                     'persistent_footer_buttons' => $themePage->persistent_footer_buttons,
                     'background_color' => $themePage->background_color,
                     'border_color' => $themePage->border_color,
+                    'screen_status' => $themePage->screen_status,
+                    'static_screen_image' => $themePage->static_screen_image,
+                    'static_screen_message' => $themePage->static_screen_message,
                     'border_radius' => $themePage->border_radius,
                     'components' => $themePage->components->map(function ($component) {
                         return [
@@ -336,11 +339,45 @@ class ThemeController extends Controller
                 'sort_order' => $value ?? null
             ]);
             $response['status'] = 'ok';
+        } elseif ($fieldName === 'screen_status'){
+            $themePage->update([
+                'screen_status' => $value ?? 'dynamic'
+            ]);
+            if ($value == 'static'){
+                ThemeComponent::where('theme_id', $themePage->theme_id)->where('theme_page_id', $id)->update(['selected_id' => 0]);
+            }
+            $response['status'] = 'ok';
+        } elseif ($fieldName === 'static_screen_message'){
+            $themePage->update([
+                'static_screen_message' => $value ?? null
+            ]);
+            $response['status'] = 'ok';
         } else {
             return response()->json(['status' => 'error', 'message' => 'Invalid fieldName'], 400);
         }
 
         return response()->json($response);
+    }
+
+    public function themePageInlineImageUpload(Request $request)
+    {
+        $request->validate([
+            'theme_page_id' => 'required|exists:appfiy_theme_page,id',
+            'static_screen_image' => 'required|image|max:2048'
+        ]);
+
+        $page = ThemePage::findOrFail($request->theme_page_id);
+
+        // Handle Image Upload
+        $filename = config('app.is_image_update')
+            ? $this->handleFileUpload($request, $page, 'static_screen_image', 'static-screen-image')
+            : $page->static_screen_image;
+
+        // Save path to DB
+        $page->static_screen_image = $filename;
+        $page->save();
+
+        return response()->json(['status'=>'ok', 'path'=>$page->static_screen_image]);
     }
 
 

@@ -134,6 +134,7 @@ Route::prefix('/appza')->middleware(['auth'])->group(function() {
         Route::get('assign/component/{id}',[ThemeController::class, 'themeAssignComponent'])->name('theme_assign_component');
         Route::get('assign/component-update',[ThemeController::class, 'themeAssignComponentUpdate'])->name('theme_assign_component_update');
         Route::get('page/inline/update',[ThemeController::class, 'themePageInlineUpdate'])->name('theme_page_inline_update');
+        Route::post('page/inline/image-upload/static',[ThemeController::class, 'themePageInlineImageUpload'])->name('theme_page_inline_image_upload');
 
 
         Route::get('edit/{id}',[ThemeController::class,'edit'])->name('theme_edit');
