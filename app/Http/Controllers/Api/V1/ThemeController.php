@@ -181,6 +181,9 @@ class ThemeController extends Controller
                             'appfiy_theme_page.background_color',
                             'appfiy_theme_page.border_color',
                             'appfiy_theme_page.border_radius',
+                            'appfiy_theme_page.screen_status',
+                            'appfiy_theme_page.static_screen_image',
+                            'appfiy_theme_page.static_screen_message',
                             'appfiy_page.name',
                             'appfiy_page.component_limit',
                             'appfiy_page.slug',
@@ -597,10 +600,22 @@ class ThemeController extends Controller
 
                             }
 
-
-
                             $final[] = $componentGeneral;
                         }
+                    }
+
+                    $pageProperties = [
+                        'screen_status' => $page->screen_status,
+                        'static_screen_image' => $page->static_screen_image ? config('app.image_public_path').$page->static_screen_image : null,
+                        'static_screen_message' => $page->static_screen_message,
+                    ];
+
+                    if ($page->screen_status === 'dynamic'){
+                        $pageProperties['page_decoration'] = [
+                            'background_color' => $page->background_color,
+                            'border_color' => $page->border_color,
+                            'border_radius' => $page->border_radius,
+                        ];
                     }
 
                     $pages[] = [
@@ -608,21 +623,9 @@ class ThemeController extends Controller
                         'slug' => $page->slug,
                         'component_limit' => $page->component_limit > 0 ? $page->component_limit : null,
                         'persistent_footer_buttons' => isset($page->persistent_footer_buttons) ? (string)$page->persistent_footer_buttons : null,
-                        'properties' => [
-                            'page_decoration' => [
-                                'background_color' => $page->background_color,
-                                'border_color' => $page->border_color,
-                                'border_radius' => $page->border_radius,
-                            ],
-                        ],
-                        'customize_properties' => [
-                            'page_decoration' => [
-                                'background_color' => $page->background_color,
-                                'border_color' => $page->border_color,
-                                'border_radius' => $page->border_radius,
-                            ],
-                        ],
-                        'components' => $final
+                        'properties' => $pageProperties,
+                        'customize_properties' => $pageProperties,
+                        'components' => $page->screen_status === 'dynamic' ? $final : []
                     ];
                 }
             }
