@@ -40,7 +40,8 @@ class BuildOrder extends Model
         'license_key',
         'is_build_dir_delete',
         'build_orders',
-        'history_id'
+        'history_id',
+        'splash_screen'
     ];
 
     protected $casts = [

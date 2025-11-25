@@ -194,6 +194,7 @@ class ApkBuildHistoryController extends Controller
             'base_suffix' => '/wp-json/appza/api/v1/',
             'base_url' => rtrim($findSiteUrl->site_url, '/') . '/wp-json/appza/api/v1/',
             'icon_url' => $buildHistory->app_logo,
+            'splash_screen' => $buildHistory->app_splash_screen_image,
             'history_id' => $buildHistory->id,
         ];
 
