@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Requests\ApkBuildRequest;
 use App\Http\Requests\AppNameRequest;
+use App\Http\Requests\BuildNotificationRequest;
 use App\Http\Requests\IosBuildRequest;
 use App\Models\AppVersion;
 use App\Models\BuildDomain;
@@ -336,4 +337,107 @@ class ApkBuildResourceController extends Controller
             ]
         ]);
     }
+
+
+    public function notificationResource(BuildNotificationRequest $request)
+    {
+        $input = $request->validated();
+
+        $jsonResponse = fn($status, $message, $data = []) => response()->json(array_merge([
+            'status' => $status,
+            'url' => $request->fullUrl(),
+            'method' => $request->getMethod(),
+            'message' => $message,
+        ], $data), $status);
+
+        $siteUrl = $this->normalizeUrl($input['site_url']);
+
+        $findSiteUrl = BuildDomain::where('site_url', $siteUrl)
+            ->where('license_key', $input['license_key'])
+            ->first();
+
+        if (!$findSiteUrl) {
+            return $jsonResponse(Response::HTTP_NOT_FOUND, 'Domain or license key is incorrect');
+        }
+
+        $directory = 'app-file/push-notification';
+        $disk = 'r2';
+
+        $fileNameAndroid = null;
+        $fileNameIos = null;
+
+        /*
+        |--------------------------------------------------------------------------
+        | DELETE OLD ANDROID FILE IF EXISTS
+        |--------------------------------------------------------------------------
+        */
+        if (!empty($input['android_notification_content'])) {
+
+            if ($findSiteUrl->android_push_notification_url) {
+
+                // Extract R2 path from full URL
+                $oldAndroidPath = str_replace(config('app.image_public_path'), '', $findSiteUrl->android_push_notification_url);
+
+                // Delete from R2 if exists
+                if (Storage::disk($disk)->exists($oldAndroidPath)) {
+                    Storage::disk($disk)->delete($oldAndroidPath);
+                }
+            }
+
+            // Upload new android file
+            $fileNameAndroid = 'push_notification_' . uniqid() . '.json';
+            Storage::disk($disk)->put(
+                "$directory/android/$fileNameAndroid",
+                $input['android_notification_content']
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | DELETE OLD IOS FILE IF EXISTS
+        |--------------------------------------------------------------------------
+        */
+        if (!empty($input['ios_notification_content'])) {
+
+            if ($findSiteUrl->ios_push_notification_url) {
+
+                // Extract path
+                $oldIosPath = str_replace(config('app.image_public_path'), '', $findSiteUrl->ios_push_notification_url);
+
+                if (Storage::disk($disk)->exists($oldIosPath)) {
+                    Storage::disk($disk)->delete($oldIosPath);
+                }
+            }
+
+            // Upload new iOS file
+            $fileNameIos = 'push_notification_' . uniqid() . '.plist';
+            Storage::disk($disk)->put(
+                "$directory/ios/$fileNameIos",
+                $input['ios_notification_content']
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | UPDATE ONLY NEW FILES
+        |--------------------------------------------------------------------------
+        */
+        $updateData = [];
+
+        if ($fileNameAndroid) {
+            $updateData['android_push_notification_url'] = config('app.image_public_path') . "$directory/android/$fileNameAndroid";
+        }
+
+        if ($fileNameIos) {
+            $updateData['ios_push_notification_url'] = config('app.image_public_path') . "$directory/ios/$fileNameIos";
+        }
+
+        $findSiteUrl->update($updateData);
+        $findSiteUrl->refresh();
+
+        return $jsonResponse(Response::HTTP_OK, "Successfully pushed notification information updated.");
+    }
+
+
+
 }

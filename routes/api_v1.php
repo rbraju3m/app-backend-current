@@ -55,7 +55,7 @@ Route::prefix('/appza/v1')
         Route::prefix('firebase')->group(function () {
             Route::get('credential/{product}', [FirebaseController::class,'credential'])
                 ->name('firebase_credential')
-                ->whereIn('product', ['appza', 'lazy_task','fcom_mobile']);;
+                ->whereIn('product', ['appza', 'lazy_task','fcom_mobile']);
         });
 
         // license api
@@ -75,9 +75,15 @@ Route::prefix('/appza/v1')
         Route::prefix('build')->group(function () {
             Route::post('resource', [ApkBuildResourceController::class,'buildResource'])->name('create_build_resource');
             Route::post('ios-keys-verify', [ApkBuildResourceController::class,'iosResourceAndVerify'])->name('create_ios_resource_and_verify');
+            Route::post('ios-check-app-name', [ApkBuildResourceController::class,'iosCheckAppName'])->name('ios_app_name_check');
+
             Route::post('', [ApkBuildHistoryController::class,'apkBuild'])->name('create_building_apk');
             Route::get('history', [ApkBuildHistoryController::class,'apkBuildHistoryList'])->name('build_history_list');
-            Route::post('ios-check-app-name', [ApkBuildResourceController::class,'iosCheckAppName'])->name('ios_app_name_check');;
+
+            // for notification
+            Route::post('push-notification-resource', [ApkBuildResourceController::class,'notificationResource'])
+                ->name('create_notification_resource');
+
 
             // build response by builder application
             Route::post('/response/{id}', [ApkBuildHistoryController::class,'apkBuildResponse'])->name('building_apk_response');

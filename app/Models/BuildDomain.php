@@ -36,7 +36,9 @@ class BuildDomain extends Model
         'ios_app_name',
         'is_app_license_check',
         'build_plugin_slug',
-        'is_deactivated'
+        'is_deactivated',
+        'android_push_notification_url',
+        'ios_push_notification_url'
     ];
 
     public static function boot() {
