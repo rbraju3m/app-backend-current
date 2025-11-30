@@ -69,6 +69,10 @@ class ApkBuildHistoryController extends Controller
             return $jsonResponse(Response::HTTP_LOCKED, 'Builder is busy. Please try again later.');
         }
 
+        $appLicenseCheckUrl = config('app.app_license_check_url', null);
+        if (!$appLicenseCheckUrl) {
+            return $jsonResponse(Response::HTTP_LOCKED, 'License check url config error. Please try again later.');
+        }
         if (!$this->authorization) {
             return $jsonResponse(Response::HTTP_UNAUTHORIZED, 'Unauthorized');
         }
@@ -137,7 +141,7 @@ class ApkBuildHistoryController extends Controller
             });
 
             // Dispatch job after transaction
-            $this->buildRequestProcessForJob($buildHistory, $findSiteUrl, $isBuilderON, $isPushNotification);
+            $this->buildRequestProcessForJob($buildHistory, $findSiteUrl, $isBuilderON, $isPushNotification, $appLicenseCheckUrl);
 
             $findBuildOrder = BuildOrder::where('history_id', $buildHistory->id)->first();
 
@@ -187,7 +191,7 @@ class ApkBuildHistoryController extends Controller
             return $jsonResponse(Response::HTTP_INTERNAL_SERVER_ERROR, 'Failed to create build. Error: ' . $e->getMessage());
         }
     }
-    private function buildRequestProcessForJob($buildHistory, $findSiteUrl, $isBuilderON, $isPushNotification)
+    private function buildRequestProcessForJob($buildHistory, $findSiteUrl, $isBuilderON, $isPushNotification, $appLicenseCheckUrl)
     {
         $data = [
             'build_plugin_slug' => $findSiteUrl->build_plugin_slug,
@@ -224,14 +228,14 @@ class ApkBuildHistoryController extends Controller
         ]);
 
         foreach ($platforms as $platform) {
-            $this->processBuildOrder($findSiteUrl, $buildHistory, $data, $platform, $isBuilderON, $isPushNotification);
+            $this->processBuildOrder($findSiteUrl, $buildHistory, $data, $platform, $isBuilderON, $isPushNotification, $appLicenseCheckUrl);
         }
     }
 
     /**
      * @throws Exception
      */
-    private function processBuildOrder($findSiteUrl, $buildHistory, $data, $platform, $isBuilderON, $isPushNotification)
+    private function processBuildOrder($findSiteUrl, $buildHistory, $data, $platform, $isBuilderON, $isPushNotification, $appLicenseCheckUrl)
     {
         $data['license_key'] = $findSiteUrl->license_key;
         $data['build_domain_id'] = $findSiteUrl->id;
@@ -267,7 +271,7 @@ class ApkBuildHistoryController extends Controller
             $data['ios_push_notification_url'] = $isPushNotification ? $findSiteUrl->ios_push_notification_url : null;
         }
 
-        $data['app_license_check_url'] = config('app.app_license_check_url', null);
+        $data['app_license_check_url'] = $appLicenseCheckUrl;
 
         try {
             $order = BuildOrder::create($data);
