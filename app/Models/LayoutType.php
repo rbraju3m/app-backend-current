@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LayoutType extends Model
 {
-    use HasFactory,SoftDeletes;
+    use SoftDeletes;
 
     protected $table = 'appfiy_layout_type';
     public $timestamps = true;

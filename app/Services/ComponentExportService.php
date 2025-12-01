@@ -75,13 +75,14 @@ class ComponentExportService
     }
 
     /**
-     * Export scopes related to component
+     * Export scopes related to component with page data
      */
     protected function exportScopes(Component $component): array
     {
         $scopeArray = json_decode($component->scope, true) ?? [];
         $scopes = Scope::whereIn('slug', $scopeArray)
-            ->get(['id', 'name', 'slug', 'is_global'])
+            ->with(['page:id,name,slug,plugin_slug,background_color,border_color,border_radius,component_limit,persistent_footer_buttons'])
+            ->get(['id', 'name', 'slug', 'is_global', 'page_id'])
             ->toArray();
 
         return $scopes;

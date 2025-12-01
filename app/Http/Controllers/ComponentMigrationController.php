@@ -124,10 +124,10 @@ class ComponentMigrationController extends Controller
     public function importFromFile(Request $request)
     {
 //        dump($request->file('file'));
-        $request->validate([
+        /*$request->validate([
             'file' => 'required|file|mimes:json,txt',
             'overwrite' => 'sometimes|boolean'
-        ]);
+        ]);*/
 
         $json = file_get_contents($request->file('file')->getRealPath());
         $payload = json_decode($json, true);
@@ -138,7 +138,7 @@ class ComponentMigrationController extends Controller
 //        dump($payload);
 
         $result = $this->importService->import($payload, $request->input('overwrite', false));
-
+        dump($result);
 //        return back()->with($result['success'] ? 'success' : 'error', $result['message']);
 //        return back()->with('success','Created Okay');
     }

@@ -23,24 +23,24 @@ class ComponentImportService
      */
     public function import(array $payload, bool $overwrite = false): array
     {
-//        dump($payload);
         DB::beginTransaction();
         try {
             // Import reference data first
             $this->importReferenceData($payload);
+//            dump('0k');
 
             // Import component
-            $component = $this->importComponent($payload['component'], $overwrite);
+//            $component = $this->importComponent($payload['component'], $overwrite);
 
             // Import related data
-            $this->importComponentStyleGroups($component->id, $payload['style_groups']);
-            $this->importComponentProperties($component->id, $payload['properties']);
-            $this->importComponentScopes($component, $payload['scopes']);
+//            $this->importComponentStyleGroups($component->id, $payload['style_groups']);
+//            $this->importComponentProperties($component->id, $payload['properties']);
+//            $this->importComponentScopes($component, $payload['scopes']);
 
             DB::commit();
 
             Log::info('Component imported successfully', [
-                'component_id' => $component->id,
+//                'component_id' => $component->id,
                 'source' => $payload['meta']['source'] ?? 'unknown',
                 'overwrite' => $overwrite
             ]);
@@ -48,7 +48,7 @@ class ComponentImportService
             return [
                 'success' => true,
                 'message' => 'Component imported successfully',
-                'component_id' => $component->id
+//                'component_id' => $component->id
             ];
         } catch (\Exception $e) {
             DB::rollBack();
@@ -67,6 +67,71 @@ class ComponentImportService
     /**
      * Import reference data (plugins, layout types, etc.)
      */
+    /*protected function importReferenceData(array $payload): void
+    {
+        // Import plugin if not exists
+        if (!empty($payload['plugin'])) {
+            SupportsPlugin::updateOrCreate(
+                ['slug' => $payload['plugin']['slug']],
+                $payload['plugin']
+            );
+        }
+
+        // Import layout type if not exists
+        if (!empty($payload['layout_type'])) {
+            LayoutType::updateOrCreate(
+                ['slug' => $payload['layout_type']['slug']],
+                $payload['layout_type']
+            );
+        }
+
+        // Import component type if not exists
+        if (!empty($payload['component_type'])) {
+            ComponentType::updateOrCreate(
+                ['slug' => $payload['component_type']['slug']],
+                $payload['component_type']
+            );
+        }
+        // Import scopes if not exists
+        if (!empty($payload['scopes'])) {
+            foreach ($payload['scopes'] as $scope) {
+                Scope::updateOrCreate(
+                    ['slug' => $scope['slug'],'plugin_slug' => $payload['plugin']['slug']],
+                    $scope
+                );
+            }
+        }
+
+        // Import class types if not exists
+        if (!empty($payload['class_types'])) {
+            $pluginSlug = $payload['plugin']['slug'] ?? null;
+
+            foreach ($payload['class_types'] as $classType) {
+                // Check if class type exists
+                $existingClassType = ClassType::where('slug', $classType['slug'])->first();
+
+                if ($existingClassType) {
+                    // If exists, ensure plugin is in the JSON array
+                    $plugins = $existingClassType->plugin ?? [];
+                    if (!in_array($pluginSlug, $plugins)) {
+                        $plugins[] = $pluginSlug;
+                        $existingClassType->plugin = $plugins;
+                        $existingClassType->save();
+                    }
+                } else {
+                    // If new, create with plugin in JSON array
+                    ClassType::create([
+                        'name' => $classType['name'],
+                        'slug' => $classType['slug'],
+                        'plugin' => [$pluginSlug], // Create as JSON array
+                        'is_active' => $classType['is_active'] ?? 1,
+                        'created_at' => now()
+                    ]);
+                }
+            }
+        }
+    }*/
+
     protected function importReferenceData(array $payload): void
     {
         // Import plugin if not exists
@@ -92,13 +157,42 @@ class ComponentImportService
                 $payload['component_type']
             );
         }
-//        dump($payload['scopes']);
+
         // Import scopes if not exists
         if (!empty($payload['scopes'])) {
             foreach ($payload['scopes'] as $scope) {
+                $pageId = null;
+
+                // Check if scope has a page relationship
+                if (!empty($scope['page_id']) && !empty($scope['page'])) {
+                    // Check if page exists by slug
+                    $page = Page::where('slug', $scope['page']['slug'])->first();
+
+                    if (!$page) {
+                        // Create page if it doesn't exist
+                        $page = Page::create([
+                            'name' => $scope['page']['name'],
+                            'slug' => $scope['page']['slug'],
+                            'plugin_slug' => $scope['page']['plugin_slug'] ?? $payload['plugin']['slug'],
+                            'background_color' => $scope['page']['background_color'] ?? null,
+                            'border_color' => $scope['page']['border_color'] ?? null,
+                            'border_radius' => $scope['page']['border_radius'] ?? null,
+                            'component_limit' => $scope['page']['component_limit'] ?? null,
+                            'persistent_footer_buttons' => $scope['page']['persistent_footer_buttons'] ?? null,
+                        ]);
+                    }
+
+                    $pageId = $page->id;
+                }
+
+                // Create or update scope with page_id
                 Scope::updateOrCreate(
-                    ['slug' => $scope['slug'],'plugin_slug' => $payload['plugin']['slug']],
-                    $scope
+                    ['slug' => $scope['slug'], 'plugin_slug' => $payload['plugin']['slug']],
+                    [
+                        'name' => $scope['name'],
+                        'is_global' => $scope['is_global'],
+                        'page_id' => $pageId,
+                    ]
                 );
             }
         }

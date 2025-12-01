@@ -3,13 +3,12 @@
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ComponentType extends Model
 {
-    use HasFactory,SoftDeletes,Sluggable;
+    use SoftDeletes,Sluggable;
 
     protected $table = 'appfiy_component_type';
     public $timestamps = false;

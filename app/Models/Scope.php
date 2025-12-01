@@ -15,4 +15,8 @@ class Scope extends Model
     protected $dates = ['deleted_at','created_at','updated_at'];
     protected $fillable = ['name', 'slug','is_global','plugin_slug','page_id'];
 
+    public function page()
+    {
+        return $this->belongsTo(Page::class, 'page_id', 'id');
+    }
 }
