@@ -26,18 +26,19 @@ class ComponentImportService
     {
         DB::beginTransaction();
         try {
+            $pluginSlug = $payload['plugin']['slug'];
+//            dump($payload['plugin']['slug']);
             // Import reference data first
             $referenceData = $this->importReferenceData($payload);
-
+//            dump($payload);
             $payload['component']['layout_type_id'] = $referenceData['layout_type_id'] ?? null;
             $payload['component']['component_type_id'] = $referenceData['component_type_id'] ?? null;
-            dump($payload['component']);
 
             // Import component
-//            $component = $this->importComponent($payload['component'], $overwrite);
+            $component = $this->importComponent($payload['component'], $overwrite);
 
             // Import related data
-//            $this->importComponentStyleGroups($component->id, $payload['style_groups']);
+            $this->importComponentStyleGroups($component->id, $payload['style_groups'],$pluginSlug);
 //            $this->importComponentProperties($component->id, $payload['properties']);
 //            $this->importComponentScopes($component, $payload['scopes']);
 
@@ -159,7 +160,8 @@ class ComponentImportService
                         'name' => $classType['name'],
                         'slug' => $classType['slug'],
                         'plugin' => [$pluginSlug], // Create as JSON array
-                        'is_active' => $classType['is_active'] ?? 1
+                        'is_active' => $classType['is_active'] ?? 1,
+                        'created_at' => now()
                     ]);
                 }
             }
@@ -185,10 +187,10 @@ class ComponentImportService
         // Prepare data for import
         $data = $this->prepareComponentData($componentData);
 
-        /*return Component::updateOrCreate(
+        return Component::updateOrCreate(
             ['slug' => $data['slug']],
             $data
-        );*/
+        );
     }
 
     /**
@@ -203,23 +205,32 @@ class ComponentImportService
                 $data[$field] = json_encode($data[$field]);
             }
         }
-        dump($data);
 
-//        return $data;
+        return $data;
     }
 
     /**
      * Import component style groups
      */
-    protected function importComponentStyleGroups(int $componentId, array $styleGroups): void
+    /*protected function importComponentStyleGroups(int $componentId, array $styleGroups, string $pluginSlug): void
     {
         foreach ($styleGroups as $group) {
             // Find style group by slug
             $styleGroup = StyleGroup::where('slug', $group['style_group']['slug'])->first();
 
             if (!$styleGroup) {
-                Log::warning("Style group not found: {$group['style_group']['slug']}");
-                continue;
+                $styleGroup = StyleGroup::create([
+                    'name' => $group['style_group']['name'],
+                    'slug' => $group['style_group']['slug'],
+                    'plugin_slug' => [$pluginSlug],
+                ]);
+            }else{
+                $pluginSlugArray = $styleGroup['plugin_slug'];
+                $pluginSlugExists = in_array($pluginSlug, $pluginSlugArray);
+                if (!$pluginSlugExists) {
+                    array_push($pluginSlugArray, $pluginSlug);
+                    $styleGroup->update(['plugin_slug' => $pluginSlugArray]);
+                }
             }
 
             ComponentStyleGroup::updateOrCreate(
@@ -231,6 +242,63 @@ class ComponentImportService
                     'is_checked' => $group['is_checked'] ?? false,
                 ]
             );
+        }
+    }*/
+
+    protected function importComponentStyleGroups(int $componentId, array $styleGroups, string $pluginSlug): void
+    {
+        foreach ($styleGroups as $group) {
+            // Validate required data
+            if (empty($group['style_group']['slug']) || empty($group['style_group']['name'])) {
+                Log::warning("Skipping style group with missing required data", ['group' => $group]);
+                continue;
+            }
+
+            // Find or create style group
+            $styleGroup = StyleGroup::where('slug', $group['style_group']['slug'])->first();
+
+            if (!$styleGroup) {
+                // Create new style group
+                $styleGroup = StyleGroup::create([
+                    'name' => $group['style_group']['name'],
+                    'slug' => $group['style_group']['slug'],
+                    'plugin_slug' => [$pluginSlug],
+                    'is_active' => $group['style_group']['is_active'] ?? 1,
+                ]);
+            } else {
+                // Update existing style group's plugin array if needed
+                $this->updateStyleGroupPlugins($styleGroup, $pluginSlug);
+            }
+
+            // Create or update component style group relationship
+            /*ComponentStyleGroup::updateOrCreate(
+                [
+                    'component_id' => $componentId,
+                    'style_group_id' => $styleGroup->id,
+                ],
+                [
+                    'is_checked' => $group['is_checked'] ?? false,
+                ]
+            );*/
+        }
+    }
+
+    /**
+     * Update the plugin_slug array for a style group
+     */
+    protected function updateStyleGroupPlugins(StyleGroup $styleGroup, string $pluginSlug): void
+    {
+        $currentPlugins = $styleGroup->plugin_slug ?? [];
+
+        // Ensure it's an array
+        if (!is_array($currentPlugins)) {
+            $currentPlugins = json_decode($currentPlugins, true) ?? [];
+        }
+
+        // Add plugin if not exists
+        if (!in_array($pluginSlug, $currentPlugins)) {
+            $currentPlugins[] = $pluginSlug;
+            $styleGroup->update(['plugin_slug' => $currentPlugins]);
         }
     }
 

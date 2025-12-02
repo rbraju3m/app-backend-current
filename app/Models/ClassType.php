@@ -17,7 +17,7 @@ class ClassType extends Model
     ];
 
     // Specify mass assignable attributes
-    protected $fillable = ['name', 'slug', 'plugin', 'is_active'];
+    protected $fillable = ['name', 'slug', 'plugin', 'is_active','created_at'];
 
     public function scopeActive($query)
     {

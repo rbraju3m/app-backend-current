@@ -91,8 +91,16 @@ class IosBuildValidationService
     {
         $filePath = $findSiteUrl->ios_p8_file_content;
 
+        if (empty($filePath)) {
+            return [
+                'success' => false,
+                'status' => Response::HTTP_BAD_REQUEST,
+                'message' => 'No .p8 file path found for this site.',
+            ];
+        }
+
         // Convert full URL → R2 path
-        if (str_starts_with($filePath, 'http')) {
+        if (is_string($filePath) && str_starts_with($filePath, 'http')) {
             $filePath = parse_url($filePath, PHP_URL_PATH);
             $filePath = ltrim($filePath, '/');
         }
