@@ -123,7 +123,16 @@ class ComponentImportService
             $this->addLog('Importing plugin: ' . $payload['plugin']['slug'], true, $payload['plugin']);
             SupportsPlugin::updateOrCreate(
                 ['slug' => $payload['plugin']['slug']],
-                $payload['plugin']
+                [
+                    'name' => $payload['plugin']['name'] ?? null,
+                    'prefix' => $payload['plugin']['prefix'] ?? null,
+                    'status' => $payload['plugin']['status'] ?? null,
+                    'title' => $payload['plugin']['title'] ?? null,
+                    'description' => $payload['plugin']['description'] ?? null,
+                    'others' => $payload['plugin']['others'] ?? null,
+                    'is_disable' => $payload['plugin']['is_disable'] ?? null,
+                    'sort_order' => $payload['plugin']['sort_order'] ?? null
+                ]
             );
         }
 
@@ -131,7 +140,11 @@ class ComponentImportService
             $this->addLog('Importing layout type: ' . $payload['layout_type']['slug'], true, $payload['layout_type']);
             $layoutType = LayoutType::updateOrCreate(
                 ['slug' => $payload['layout_type']['slug']],
-                $payload['layout_type']
+                [
+                    'name' => $payload['layout_type']['name'] ?? null,
+                    'slug' => $payload['layout_type']['slug'] ?? null,
+                    'is_active' => $payload['layout_type']['is_active'] ?? null
+                ]
             );
         }
 
@@ -168,6 +181,13 @@ class ComponentImportService
                 );
             }
             $this->addLog('Scopes imported', true, ['count' => count($payload['scopes'])]);
+        }
+
+        if ($payload['class_types']){
+            ClassType::updateOrCreate(
+                ['slug' => $payload['component']['product_type']],
+                $payload['class_types']
+            );
         }
 
         return [
@@ -224,6 +244,7 @@ class ComponentImportService
                     $data['image'] = $newFileName;
                     $this->addLog('Image uploaded to R2', true, ['url' => $newFileName]);
                 } else {
+                    $data['image'] = null;
                     $this->addLog('Failed to download image', false, ['url' => $imageUrl, 'status' => $response->status()]);
                 }
             } catch (\Exception $e) {

@@ -13,6 +13,22 @@
     </div><!-- sidebar-search -->
     <div class="sidebar-body pt-20">
 
+        @if(auth()->user()->user_type === 'DEVELOPER')
+            <div class="nav-group {{ Request::is('appza/component/*') ? 'show' : ''}}">
+                <div class="nav-group-label" style="font-size: 15px !important;color: red">Migration</div>
+                <ul class="nav-sidebar">
+                    <li class="nav-item ">
+                        @if(config('app.is_component_export'))
+                            <a href="{{route('component_migration_index')}}" class="nav-link {{ Request::is('appza/component') ? 'active' : ''}}"><i data-feather="arrow-right"></i><span>Component Export</span></a>
+                        @endif
+                        @if(config('app.is_component_import'))
+                            <a href="{{route('component_migrate_form')}}" class="nav-link {{ Request::is('appza/component') ? 'active' : ''}}"><i data-feather="arrow-right"></i><span>Component Import</span></a>
+                        @endif
+                    </li>
+                </ul>
+            </div>
+        @endif
+
         @if(auth()->user()->user_type === 'DEVELOPER' || auth()->user()->user_type === 'ADMIN')
 
         <div class="nav-group {{ Request::is('appza/layout-type/*') ? 'show' : ''}}">

@@ -55,6 +55,11 @@ class ComponentMigrationController extends Controller
     // DEV: Download component as JSON
     public function downloadExport($id)
     {
+        $is_component_export = config('app.is_component_export');
+        if (!$is_component_export || auth()->user()->user_type != 'DEVELOPER') {
+            return redirect()->route('component_migration_index')->with('validate', 'You are not allowed to download this component export.');
+        }
+
         $findComponent = Component::find($id);
         $payload = $this->exportService->export((int)$id);
         $json = json_encode($payload, JSON_PRETTY_PRINT);

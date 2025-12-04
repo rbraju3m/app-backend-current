@@ -23,26 +23,28 @@
             </div>
         @endif
 
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0">Upload Component JSON</h5>
+        @if(auth()->user()->user_type === 'DEVELOPER' && config('app.is_component_import'))
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Upload Component JSON</h5>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('component_migrate_import_file') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="file" class="form-label">Component JSON File</label>
+                            <input type="file" class="form-control" id="file" name="file" required accept=".json">
+                            <div class="form-text">Select the JSON file exported from the development server. Max 10MB</div>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="overwrite" name="overwrite" value="1">
+                            <label class="form-check-label" for="overwrite">Overwrite if component already exists</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-upload me-2"></i>Import Component</button>
+                    </form>
+                </div>
             </div>
-            <div class="card-body">
-                <form action="{{ route('component_migrate_import_file') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="file" class="form-label">Component JSON File</label>
-                        <input type="file" class="form-control" id="file" name="file" required accept=".json">
-                        <div class="form-text">Select the JSON file exported from the development server. Max 10MB</div>
-                    </div>
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="overwrite" name="overwrite" value="1">
-                        <label class="form-check-label" for="overwrite">Overwrite if component already exists</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-upload me-2"></i>Import Component</button>
-                </form>
-            </div>
-        </div>
+        @endif
 
         {{-- Recent Imports --}}
         <div class="card">

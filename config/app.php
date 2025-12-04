@@ -24,6 +24,8 @@ return [
     'is_hash_authorization' => env('IS_HASH_AUTHORIZATION', true),
     'is_request_log' => env('IS_REQUEST_LOG', true),
     'app_license_check_url' => env('APP_LICENSE_CHECK_URL', null),
+    'is_component_export' => env('IS_COMPONENT_EXPORT', false),
+    'is_component_import' => env('IS_COMPONENT_IMPORT', false),
 
     /*
     |--------------------------------------------------------------------------

@@ -125,15 +125,16 @@ class ComponentExportService
      * Export class types related to component
      */
 
-    protected function exportClassTypes(Component $component): array
+    protected function exportClassTypes(Component $component)
     {
         if (!$component->plugin_slug) {
             return [];
         }
 
         return ClassType::whereJsonContains('plugin', $component->plugin_slug)
+            ->where('slug', $component->product_type)
             ->get(['id', 'name', 'slug', 'plugin']) // Include plugin field
-            ->toArray();
+            ->first();
     }
 
     /**

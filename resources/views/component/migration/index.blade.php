@@ -1,58 +1,6 @@
 @extends('layouts.app')
 
 @section('body')
-    {{--<div class="container">
-        <h1>Component Migration</h1>
-
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>SL</th>
-                    <th>ID</th>
-                    <th>Plugin</th>
-                    <th>Name</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                @php
-                    $currentPage = $components->currentPage();
-                    $perPage = $components->perPage();
-                    $serial = ($currentPage - 1) * $perPage + 1;
-                @endphp
-                @foreach($components as $component)
-                    <tr>
-                        <td>{{$serial++}}</td>
-                        <td>{{ $component->id }}</td>
-                        <td>{{ $component->plugin_name ?? 'N/A' }}</td>
-                        <td>{{ $component->name }}</td>
-                        <td>
-                            <div class="btn-group">
-                                <a href="{{ route('component.migrate.export', $component->id) }}" class="btn btn-sm btn-outline-primary">
-                                    Export JSON
-                                </a>
-
-                                <button class="btn btn-sm btn-primary js-send-to-prod"
-                                        data-id="{{ $component->id }}"
-                                        data-name="{{ $component->name }}">
-                                    Send to Prod
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Corrected pagination implementation -->
-        @if($components->hasPages())
-            <div class="d-flex justify-content-end">
-                {{ $components->appends(request()->query())->links() }}
-            </div>
-        @endif
-    </div>--}}
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-12">
@@ -130,11 +78,11 @@
                                                     Export JSON
                                                 </a>
 
-                                                <button class="btn btn-sm btn-primary js-send-to-prod"
+                                                {{--<button class="btn btn-sm btn-primary js-send-to-prod"
                                                         data-id="{{ $component->id }}"
                                                         data-name="{{ $component->name }}">
                                                     Send to Prod
-                                                </button>
+                                                </button>--}}
                                             </div>
                                         </td>
                                     </tr>
