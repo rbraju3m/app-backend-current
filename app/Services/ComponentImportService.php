@@ -265,14 +265,24 @@ class ComponentImportService
         foreach ($styleGroups as $group) {
             if (empty($group['style_group']['slug'])) continue;
 
-            $styleGroup = StyleGroup::firstOrCreate(
-                ['slug' => $group['style_group']['slug']],
-                [
-                    'name' => $group['style_group']['name'],
+            $styleGroup = StyleGroup::where('slug', $group['style_group']['slug'])->first();
+
+            if (!$styleGroup) {
+                StyleGroup::create([
+                    'slug'        => $group['style_group']['slug'] ?? null,
+                    'name'        => $group['style_group']['name'] ?? null,
                     'plugin_slug' => [$pluginSlug],
-                    'is_active' => $group['style_group']['is_active'] ?? 1
-                ]
-            );
+                    'is_active'   => $group['style_group']['is_active'] ?? 1,
+                ]);
+            } else {
+                $exPluginSlug = $styleGroup->plugin_slug ?? [];
+
+                // add unique only
+                if (!in_array($pluginSlug, $exPluginSlug)) {
+                    $exPluginSlug[] = $pluginSlug;
+                    $styleGroup->update(['plugin_slug' => array_values($exPluginSlug)]);
+                }
+            }
 
             $this->updateStyleGroupProperties($styleGroup, $group['style_group']['properties'] ?? []);
 
