@@ -25,7 +25,7 @@
                         @include('layouts.message')
 
                         <!-- Search Form -->
-                        <form method="GET" action="{{ route('component_list') }}" id="search-form" class="mb-4">
+                        <form method="GET" action="{{ route('component_migration_index') }}" id="search-form" class="mb-4">
                             <div class="row">
                                 <div class="col-md-8">
                                     <input type="text" name="search" class="form-control" placeholder="{{__('messages.searchPlaceholder')}}" value="{{ request('search') }}">
@@ -34,7 +34,7 @@
                                     <button type="submit" class="btn btn-primary">
                                         {{__('messages.search')}}
                                     </button>
-                                    <a href="{{ route('component_list') }}" class="btn btn-secondary">
+                                    <a href="{{ route('component_migration_index') }}" class="btn btn-secondary">
                                         {{__('messages.clear')}}
                                     </a>
                                 </div>
