@@ -268,7 +268,7 @@ class ComponentImportService
             $styleGroup = StyleGroup::where('slug', $group['style_group']['slug'])->first();
 
             if (!$styleGroup) {
-                StyleGroup::create([
+                $styleGroup = StyleGroup::create([
                     'slug'        => $group['style_group']['slug'] ?? null,
                     'name'        => $group['style_group']['name'] ?? null,
                     'plugin_slug' => [$pluginSlug],
@@ -277,13 +277,13 @@ class ComponentImportService
             } else {
                 $exPluginSlug = $styleGroup->plugin_slug ?? [];
 
-                // add unique only
                 if (!in_array($pluginSlug, $exPluginSlug)) {
                     $exPluginSlug[] = $pluginSlug;
                     $styleGroup->update(['plugin_slug' => array_values($exPluginSlug)]);
                 }
             }
 
+            // Now VALID model is always passed here
             $this->updateStyleGroupProperties($styleGroup, $group['style_group']['properties'] ?? []);
 
             ComponentStyleGroup::updateOrCreate(
@@ -295,6 +295,7 @@ class ComponentImportService
             );
         }
     }
+
 
     protected function updateStyleGroupProperties(StyleGroup $styleGroup, array $properties): void
     {
