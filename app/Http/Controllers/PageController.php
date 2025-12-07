@@ -28,29 +28,49 @@ class PageController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         // Clean up any page entries with a null slug
         Page::whereNull('slug')->first()?->delete();
 
+        // Get the search term from the request
+        $search = $request->input('search');
         // Retrieve active page entries
         $pages = Page::where('is_active', 1)
+            ->when($search, function ($query, $search) {
+                $query->where('appfiy_page.name', 'like', '%' . $search . '%')
+                    ->orWhere('appfiy_page.slug', 'like', '%' . $search . '%')
+                    ->orWhere('appza_supports_plugin.slug', 'like', '%' . $search . '%')
+                    ->orWhere('appza_supports_plugin.name', 'like', '%' . $search . '%');
+            })
             ->join('appza_supports_plugin', 'appza_supports_plugin.slug', '=', 'plugin_slug')
             ->select('appfiy_page.*', 'appza_supports_plugin.name as plugin_name')
             ->orderByDesc('id')
             ->paginate(20);
 
-        return view('page.index',compact('pages'));
+        $pages->appends(['search' => $search]);
+
+        return view('page.index',compact('pages','search'));
     }
-    public function scopeIndex()
+    public function scopeIndex(Request $request)
     {
+        // Get the search term from the request
+        $search = $request->input('search');
         // Retrieve active page entries
         $scopes = Scope::orderByDesc('id')
+            ->when($search, function ($query, $search) {
+                $query->where('appfiy_scope.name', 'like', '%' . $search . '%')
+                    ->orWhere('appfiy_scope.slug', 'like', '%' . $search . '%')
+                    ->orWhere('appza_supports_plugin.slug', 'like', '%' . $search . '%')
+                    ->orWhere('appza_supports_plugin.name', 'like', '%' . $search . '%');
+            })
             ->join('appza_supports_plugin', 'appza_supports_plugin.slug', '=', 'appfiy_scope.plugin_slug')
             ->select('appfiy_scope.*', 'appza_supports_plugin.name as plugin_name')
             ->paginate(20);
 
-        return view('page.scope-index',compact('scopes'));
+        $scopes->appends(['search' => $search]);
+
+        return view('page.scope-index',compact('scopes','search'));
     }
 
 

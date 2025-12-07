@@ -23,44 +23,60 @@
 
                     <div class="card-body">
                         @include('layouts.message')
-                        <form method="post" role="form" id="search-form">
-                            <table id="leave_settings" class="table table-bordered datatable table-responsive mainTable text-center">
 
-                                <thead class="thead-dark">
-                                <tr>
-                                    <th>{{__('messages.SL')}}</th>
-                                    <th>Plugin Name</th>
-                                    <th>{{__('messages.name')}}</th>
-                                    <th>{{__('messages.slug')}}</th>
-                                </tr>
-                                </thead>
-
-                                @if(sizeof($scopes)>0)
-                                    <tbody>
-                                        @php
-                                            $i=1;
-                                            $currentPage = $scopes->currentPage();
-                                            $perPage = $scopes->perPage();
-                                            $serial = ($currentPage - 1) * $perPage + 1;
-                                        @endphp
-                                        @foreach($scopes as $scope)
-                                            <tr>
-                                                <td>{{$serial++}}</td>
-                                                <td>{{$scope->plugin_name}}</td>
-                                                <td>{{$scope->name}}</td>
-                                                <td>{{$scope->slug}}</td>
-                                            </tr>
-                                            @php $i++; @endphp
-                                        @endforeach
-                                    </tbody>
-                                @endif
-                            </table>
-                            @if(isset($scopes) && count($scopes)>0)
-                                <div class=" justify-content-right">
-                                    {{ $scopes->links('layouts.pagination') }}
+                        <!-- Search Form -->
+                        <form method="GET" action="{{ route('scope_list') }}" id="search-form" class="mb-4">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <input type="text" name="search" class="form-control" placeholder="{{__('messages.searchPlaceholderPage')}}" value="{{ request('search') }}">
                                 </div>
-                            @endif
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        {{__('messages.search')}}
+                                    </button>
+                                    <a href="{{ route('scope_list') }}" class="btn btn-secondary">
+                                        {{__('messages.clear')}}
+                                    </a>
+                                </div>
+                            </div>
                         </form>
+
+                        <table id="leave_settings" class="table table-bordered datatable table-responsive mainTable text-center">
+
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>{{__('messages.SL')}}</th>
+                                <th>Plugin Name</th>
+                                <th>{{__('messages.name')}}</th>
+                                <th>{{__('messages.slug')}}</th>
+                            </tr>
+                            </thead>
+
+                            @if(sizeof($scopes)>0)
+                                <tbody>
+                                    @php
+                                        $i=1;
+                                        $currentPage = $scopes->currentPage();
+                                        $perPage = $scopes->perPage();
+                                        $serial = ($currentPage - 1) * $perPage + 1;
+                                    @endphp
+                                    @foreach($scopes as $scope)
+                                        <tr>
+                                            <td>{{$serial++}}</td>
+                                            <td>{{$scope->plugin_name}}</td>
+                                            <td>{{$scope->name}}</td>
+                                            <td>{{$scope->slug}}</td>
+                                        </tr>
+                                        @php $i++; @endphp
+                                    @endforeach
+                                </tbody>
+                            @endif
+                        </table>
+                        @if(isset($scopes) && count($scopes)>0)
+                            <div class=" justify-content-right">
+                                {{ $scopes->links('layouts.pagination') }}
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

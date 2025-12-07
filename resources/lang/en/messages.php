@@ -258,6 +258,7 @@ return [
     'BackgroundColor' => 'Background Color',
     'scopeList' => 'Scope List',
     'searchPlaceholder' => 'Search by name , slug , label & scope',
+    'searchPlaceholderPage' => 'Search by name , slug',
     'search' => 'Search',
     'clear' => 'Clear',
     'fontFamily' => 'Font Family',

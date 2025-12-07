@@ -23,68 +23,84 @@
 
                     <div class="card-body">
                         @include('layouts.message')
-                        <form method="post" role="form" id="search-form">
-                            <table id="leave_settings" class="table table-bordered datatable table-responsive mainTable text-center">
 
-                                <thead class="thead-dark">
-                                <tr>
-                                    <th>{{__('messages.SL')}}</th>
-                                    <th>Plugin Name</th>
-                                    <th>{{__('messages.name')}}</th>
-                                    <th>{{__('messages.slug')}}</th>
-                                    <th>{{__('messages.backgroundColor')}}</th>
-                                    <th>{{__('messages.borderColor')}}</th>
-                                    <th>{{__('messages.borderRadius')}}</th>
-                                    <th>{{__('messages.componentLimit')}}</th>
-                                    <th scope="col text-center" class="sorting_disabled" rowspan="1" colspan="1" aria-label style="width: 24px;">
-                                        <i class="fas fa-cog"></i>
-                                    </th>
-                                </tr>
-                                </thead>
-
-                                @if(sizeof($pages)>0)
-                                    <tbody>
-                                        @php
-                                            $i=1;
-                                            $currentPage = $pages->currentPage();
-                                            $perPage = $pages->perPage();
-                                            $serial = ($currentPage - 1) * $perPage + 1;
-                                        @endphp
-                                        @foreach($pages as $page)
-                                            <tr>
-                                                <td>{{$serial++}}</td>
-                                                <td>{{$page->plugin_name}}</td>
-                                                <td>{{$page->name}}</td>
-                                                <td>{{$page->slug}}</td>
-                                                <td>{{$page->background_color}}</td>
-                                                <td>{{$page->border_color}}</td>
-                                                <td>{{$page->border_radius}}</td>
-                                                <td>{{$page->component_limit}}</td>
-
-                                                <td>
-                                                    <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                                            <a title="Edit" class="btn btn-outline-primary btn-sm" href="{{route('page_edit',$page->id)}}"><i class="fas fa-edit"></i></a>
-{{--                                                        <a title="Delete" onclick="return confirm('Are you sure?');" class="btn btn-outline-danger btn-sm" href="{{route('page_delete',$page->id)}}"><i class="fas fa-trash"></i></a>--}}
-                                                        @if(\Illuminate\Support\Facades\Auth::getUser()->user_type == 'DEVELOPER')
-                                                        <a title="Delete" onclick="return confirm('Are you sure?');" class="btn btn-outline-danger btn-sm" href="{{route('page_force_delete',$page->id)}}">
-                                                            Force <i class="fas fa-trash"></i>
-                                                        </a>
-                                                        @endif
-
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            @php $i++; @endphp
-                                        @endforeach
-                                    </tbody>
-                                @endif
-                            </table>
-                            @if(isset($pages) && count($pages)>0)
-                                <div class=" justify-content-right">
-                                    {{ $pages->links('layouts.pagination') }}
+                        <!-- Search Form -->
+                        <form method="GET" action="{{ route('page_list') }}" id="search-form" class="mb-4">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <input type="text" name="search" class="form-control" placeholder="{{__('messages.searchPlaceholderPage')}}" value="{{ request('search') }}">
                                 </div>
-                            @endif
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        {{__('messages.search')}}
+                                    </button>
+                                    <a href="{{ route('page_list') }}" class="btn btn-secondary">
+                                        {{__('messages.clear')}}
+                                    </a>
+                                </div>
+                            </div>
                         </form>
+
+                        <table id="leave_settings" class="table table-bordered datatable table-responsive mainTable text-center">
+
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>{{__('messages.SL')}}</th>
+                                <th>Plugin Name</th>
+                                <th>{{__('messages.name')}}</th>
+                                <th>{{__('messages.slug')}}</th>
+                                <th>{{__('messages.backgroundColor')}}</th>
+                                <th>{{__('messages.borderColor')}}</th>
+                                <th>{{__('messages.borderRadius')}}</th>
+                                <th>{{__('messages.componentLimit')}}</th>
+                                <th scope="col text-center" class="sorting_disabled" rowspan="1" colspan="1" aria-label style="width: 24px;">
+                                    <i class="fas fa-cog"></i>
+                                </th>
+                            </tr>
+                            </thead>
+
+                            @if(sizeof($pages)>0)
+                                <tbody>
+                                    @php
+                                        $i=1;
+                                        $currentPage = $pages->currentPage();
+                                        $perPage = $pages->perPage();
+                                        $serial = ($currentPage - 1) * $perPage + 1;
+                                    @endphp
+                                    @foreach($pages as $page)
+                                        <tr>
+                                            <td>{{$serial++}}</td>
+                                            <td>{{$page->plugin_name}}</td>
+                                            <td>{{$page->name}}</td>
+                                            <td>{{$page->slug}}</td>
+                                            <td>{{$page->background_color}}</td>
+                                            <td>{{$page->border_color}}</td>
+                                            <td>{{$page->border_radius}}</td>
+                                            <td>{{$page->component_limit}}</td>
+
+                                            <td>
+                                                <div class="btn-group" role="group" aria-label="Basic outlined example">
+                                                        <a title="Edit" class="btn btn-outline-primary btn-sm" href="{{route('page_edit',$page->id)}}"><i class="fas fa-edit"></i></a>
+{{--                                                        <a title="Delete" onclick="return confirm('Are you sure?');" class="btn btn-outline-danger btn-sm" href="{{route('page_delete',$page->id)}}"><i class="fas fa-trash"></i></a>--}}
+                                                    @if(\Illuminate\Support\Facades\Auth::getUser()->user_type == 'DEVELOPER')
+                                                    <a title="Delete" onclick="return confirm('Are you sure?');" class="btn btn-outline-danger btn-sm" href="{{route('page_force_delete',$page->id)}}">
+                                                        Force <i class="fas fa-trash"></i>
+                                                    </a>
+                                                    @endif
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @php $i++; @endphp
+                                    @endforeach
+                                </tbody>
+                            @endif
+                        </table>
+                        @if(isset($pages) && count($pages)>0)
+                            <div class=" justify-content-right">
+                                {{ $pages->links('layouts.pagination') }}
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
