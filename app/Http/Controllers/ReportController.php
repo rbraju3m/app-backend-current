@@ -303,7 +303,7 @@ class ReportController extends Controller
                 $q->where('l.plugin_name', $activeTab);
             })
             ->leftJoin('appza_free_trial_request as f', function($join) use ($activeTab) {
-                $join->on('l.email', '=', 'f.email')
+                $join->on('l.domain', '=', 'f.site_url')
                     ->whereColumn('l.domain', '=', 'f.site_url')
                     ->where('f.product_slug', $activeTab);
             })
@@ -341,6 +341,7 @@ class ReportController extends Controller
             ->orderBy('l.created_at', 'desc');
 
         $leads = $leadsQuery->paginate($perPage)->withQueryString();
+
 
         return view('reports.lead_wise_details', compact('products', 'leads', 'activeTab', 'search'));
     }
