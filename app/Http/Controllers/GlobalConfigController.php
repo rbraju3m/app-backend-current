@@ -96,6 +96,7 @@ class GlobalConfigController extends Controller
             ->where('appfiy_component.scope', 'like', '%' . $data->mode . '%')
             ->where('appfiy_component.plugin_slug', $data->plugin_slug)
             ->where('appfiy_component.is_active', 1)
+            ->whereNull('appfiy_component.deleted_at')
             ->where('appfiy_component.is_upcoming', 0)
             ->get()
             ->toArray();
