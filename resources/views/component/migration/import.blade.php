@@ -68,10 +68,12 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @php $i = 1; @endphp
+                            @php
+                                $i = ($logs->currentPage() - 1) * $logs->perPage() + 1;
+                            @endphp
                             @foreach($recentLogs as $log)
                                 <tr>
-                                    <td>{{$i}}</td>
+                                    <td>{{ $i++ }}</td>
                                     <td>{{ \Carbon\Carbon::parse($log->created_at)->format('M j, Y g:i:s A') }}</td>
                                     <td>{{ $log->component_name }}</td>
                                     <td>
@@ -96,7 +98,6 @@
                                         </button>
                                     </td>
                                 </tr>
-                                @php $i++; @endphp
                             @endforeach
                             </tbody>
                         </table>

@@ -88,10 +88,13 @@
                     </thead>
 
                     <tbody>
-                    @php $i = 1; @endphp
+                    @php
+                        $i = ($logs->currentPage() - 1) * $logs->perPage() + 1;
+                    @endphp
+
                     @forelse($logs as $log)
                         <tr>
-                            <td>{{$i}}</td>
+                            <td>{{ $i++ }}</td>
                             <td>{{ \Carbon\Carbon::parse($log->created_at)->format('M j, Y g:i:s A') }}</td>
                             <td><strong>{{ $log->component_name }}</strong></td>
                             <td>
@@ -127,7 +130,6 @@
                                 </div>
                             </td>
                         </tr>
-                        @php $i++; @endphp
                     @empty
                         <tr>
                             <td colspan="6" class="py-4 text-muted">No logs found.</td>
