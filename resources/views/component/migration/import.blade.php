@@ -58,6 +58,7 @@
                         <table class="table table-striped table-hover mb-0">
                             <thead>
                             <tr>
+                                <th>SL</th>
                                 <th>Date</th>
                                 <th>Component</th>
                                 <th>Status</th>
@@ -67,8 +68,10 @@
                             </tr>
                             </thead>
                             <tbody>
+                            @php $i = 1; @endphp
                             @foreach($recentLogs as $log)
                                 <tr>
+                                    <td>{{$i}}</td>
                                     <td>{{ \Carbon\Carbon::parse($log->created_at)->format('M j, Y g:i:s A') }}</td>
                                     <td>{{ $log->component_name }}</td>
                                     <td>
@@ -93,6 +96,7 @@
                                         </button>
                                     </td>
                                 </tr>
+                                @php $i++; @endphp
                             @endforeach
                             </tbody>
                         </table>

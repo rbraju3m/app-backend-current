@@ -77,6 +77,7 @@
                 <table class="table table-bordered text-center mb-0">
                     <thead class="thead-dark">
                     <tr>
+                        <th>SL</th>
                         <th>Date</th>
                         <th>Component</th>
                         <th>Status</th>
@@ -87,8 +88,10 @@
                     </thead>
 
                     <tbody>
+                    @php $i = 1; @endphp
                     @forelse($logs as $log)
                         <tr>
+                            <td>{{$i}}</td>
                             <td>{{ \Carbon\Carbon::parse($log->created_at)->format('M j, Y g:i:s A') }}</td>
                             <td><strong>{{ $log->component_name }}</strong></td>
                             <td>
@@ -128,6 +131,7 @@
                         <tr>
                             <td colspan="6" class="py-4 text-muted">No logs found.</td>
                         </tr>
+                        @php $i++; @endphp
                     @endforelse
                     </tbody>
                 </table>
