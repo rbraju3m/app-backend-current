@@ -127,11 +127,11 @@
                                 </div>
                             </td>
                         </tr>
+                        @php $i++; @endphp
                     @empty
                         <tr>
                             <td colspan="6" class="py-4 text-muted">No logs found.</td>
                         </tr>
-                        @php $i++; @endphp
                     @endforelse
                     </tbody>
                 </table>
