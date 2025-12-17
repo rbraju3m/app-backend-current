@@ -31,7 +31,7 @@
                                     <th>{{__('messages.Status')}}</th>
                                     <th width="13%">{{__('messages.AllFile')}}</th>
                                     <th width="14%">{{__('messages.BuildLog')}}</th>
-                                    <th width="14%">📥</th>
+                                    <th></th>
 {{--                                    <th>Delete</th>--}}
                                 </tr>
                                 </thead>
