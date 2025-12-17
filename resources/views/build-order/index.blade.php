@@ -148,7 +148,7 @@
 
                                                 <td>
                                                     @if($buildOrder->build_zip_url)
-                                                        <a href="{{$buildOrder->build_zip_url}}" download class="badge bg-dark text-white shadow-sm fs-6 rounded-pill px-3 py-2 d-inline-flex align-items-center"><span class="me-1">⏳</span> Doenload</a>
+                                                        <a href="{{$buildOrder->build_zip_url}}" download class="badge bg-dark text-white shadow-sm fs-6 rounded-pill px-3 py-2 d-inline-flex align-items-center"><span class="me-1">⏳</span> Download</a>
                                                     @endif
                                                 </td>
                                                 {{--<td>
