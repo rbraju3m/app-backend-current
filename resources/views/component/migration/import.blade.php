@@ -49,9 +49,6 @@
         {{-- Recent Imports --}}
         <div class="card">
             <div class="card-body p-0">
-                @php
-                    $recentLogs = \App\Models\ComponentImportLog::latest()->take(10)->get();
-                @endphp
 
                 @if($recentLogs->count())
                     <div class="table-responsive">

@@ -170,7 +170,8 @@ class ComponentMigrationController extends Controller
     // PROD: Show import form
     public function showImportForm()
     {
-        return view('component.migration.import');
+        $recentLogs = ComponentImportLog::latest()->paginate(10);
+        return view('component.migration.import','recentLogs');
     }
 
     // PROD: Upload and import JSON file
