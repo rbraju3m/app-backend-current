@@ -171,8 +171,9 @@ class ComponentMigrationController extends Controller
     public function showImportForm()
     {
         $recentLogs = ComponentImportLog::latest()->paginate(10);
-        return view('component.migration.import','recentLogs');
+        return view('component.migration.import', compact('recentLogs'));
     }
+
 
     // PROD: Upload and import JSON file
     public function importFromFile(Request $request)
