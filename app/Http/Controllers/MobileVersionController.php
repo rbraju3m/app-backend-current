@@ -30,7 +30,6 @@ class MobileVersionController extends Controller
                 'appza_mobile_version_mapping.id',
                 'appza_mobile_version_mapping.mobile_app_id',
                 'appza_support_mobile_apps.name as mobile_app_name',
-                'appza_mobile_version_mapping.app_name as mobile_app_slug',
                 'appza_mobile_version_mapping.mobile_version',
                 'appza_mobile_version_mapping.minimum_plugin_version',
                 'appza_mobile_version_mapping.latest_plugin_version',
@@ -65,8 +64,6 @@ class MobileVersionController extends Controller
         if (empty($findApp)) {
             return redirect()->back()->with('validate', 'Invalid mobile app. Please try again.');
         }
-
-        $inputs['app_name'] = $findApp->slug;
 
         try {
             DB::beginTransaction();
@@ -103,8 +100,6 @@ class MobileVersionController extends Controller
         if (empty($findApp)) {
             return redirect()->back()->with('validate', 'Invalid mobile app. Please try again.');
         }
-
-        $inputs['app_name'] = $findApp->slug;
 
         $findMobileVersion = MobileVersionMapping::find($id);
 

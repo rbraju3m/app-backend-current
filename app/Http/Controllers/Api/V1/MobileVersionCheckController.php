@@ -32,7 +32,9 @@ class MobileVersionCheckController extends Controller
             /**
              * Exact mobile version mapping
              */
-            $mapping = MobileVersionMapping::where('app_name', $appName)
+            $mapping = MobileVersionMapping::whereHas('mobile_app', function ($q) use ($appName) {
+                $q->where('slug', $appName);
+            })
                 ->where('is_active', 1)
                 ->where('mobile_version', $mobileVersion)
                 ->first();
@@ -160,11 +162,13 @@ class MobileVersionCheckController extends Controller
 
     private function latestMobileForPlugin(string $appName, string $pluginVersion): ?string
     {
-        return MobileVersionMapping::where('app_name', $appName)
+        return MobileVersionMapping::whereHas('mobile_app', function ($q) use ($appName) {
+            $q->where('slug', $appName);
+        })
             ->where('is_active', 1)
             ->where('minimum_plugin_version', '<=', $pluginVersion)
             ->where('latest_plugin_version', '>=', $pluginVersion)
-            ->orderByDesc('mobile_version')
+            ->orderByDesc('mobile_version_code')
             ->value('mobile_version');
     }
 }
