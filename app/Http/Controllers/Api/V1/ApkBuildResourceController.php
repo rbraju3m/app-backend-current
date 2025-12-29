@@ -313,14 +313,10 @@ class ApkBuildResourceController extends Controller
         $response = Http::get($getFluentInfo->api_url, $params);
 
         if ($response->failed()){
-            Log::info("failed");
             return $jsonResponse(Response::HTTP_SERVICE_UNAVAILABLE,'Could not connect to the license server.');
         }
 
-
         $data = $response->json();
-
-        Log::info($data['success']);
 
         if (
             !is_array($data) ||
@@ -332,28 +328,24 @@ class ApkBuildResourceController extends Controller
                 $error,
                 $data['message'] ?? 'License is not valid.'
             );
-            Log::info("error");
-
-
             return $jsonResponse(Response::HTTP_UNPROCESSABLE_ENTITY, $message);
         }
 
         $appLogo = null;
         $splashScreenImage = null;
-        Log::info("success");
 
-        return $jsonResponse(200,'success',
+        /*return $jsonResponse(200,'success',
             [
                 'data' => [
                     'package_name' => $findSiteUrl->package_name,
                     'bundle_name'  => $findSiteUrl->package_name,
                 ]
             ]
-        );
+        );*/
 
-//        DB::beginTransaction();
+        DB::beginTransaction();
 
-        /*try {
+        try {
             if (!empty($input['app_logo'])) {
                 $path = $this->uploadFromUrlToR2(
                     $input['app_logo'],
@@ -421,7 +413,7 @@ class ApkBuildResourceController extends Controller
                     'bundle_name'  => $findSiteUrl->package_name,
                 ]
             ]
-        );*/
+        );
     }
 
     private function uploadFromUrlToR2(string $url, string $directory, string $disk = 'r2')
