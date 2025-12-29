@@ -285,7 +285,7 @@ class ApkBuildResourceController extends Controller
 
         /* ---------------- Call Fluent License Server ---------------- */
 
-        $response = Http::get($getFluentInfo->api_url, $params);
+        /*$response = Http::get($getFluentInfo->api_url, $params);
         if ($response->successful()){
             Log::info("successful");
             return $jsonResponse(200,'success',
@@ -300,17 +300,19 @@ class ApkBuildResourceController extends Controller
         if ($request->failed()){
             Log::info("failed");
             return $jsonResponse(500,'failed');
-        }
-        /*try {
+        }*/
+        try {
             $response = Http::get($getFluentInfo->api_url, $params);
         } catch (ConnectionException $e) {
             return $jsonResponse(
                 Response::HTTP_SERVICE_UNAVAILABLE,
                 'Could not connect to the license server.'
             );
-        }*/
+        }
 
-        /*$data = $response->json();
+
+
+        $data = $response->json();
 
         if (
             !is_array($data) ||
@@ -329,9 +331,18 @@ class ApkBuildResourceController extends Controller
         $appLogo = null;
         $splashScreenImage = null;
 
-        DB::beginTransaction();
+        return $jsonResponse(200,'success',
+            [
+                'data' => [
+                    'package_name' => $findSiteUrl->package_name,
+                    'bundle_name'  => $findSiteUrl->package_name,
+                ]
+            ]
+        );
 
-        try {
+//        DB::beginTransaction();
+
+        /*try {
             if (!empty($input['app_logo'])) {
                 $path = $this->uploadFromUrlToR2(
                     $input['app_logo'],
