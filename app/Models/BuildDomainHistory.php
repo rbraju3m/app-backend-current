@@ -3,11 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ApkBuildHistory extends Model
+class BuildDomainHistory extends Model
 {
-    use HasFactory;
 
     protected $table = 'appfiy_apk_build_history';
     public $timestamps = false;

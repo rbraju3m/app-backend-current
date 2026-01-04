@@ -3,12 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class BuildDomain extends Model
 {
-    use HasFactory;
-
     protected $table = 'appfiy_build_domain';
     public $timestamps = false;
     protected $guarded = ['id'];

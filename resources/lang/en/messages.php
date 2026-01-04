@@ -272,7 +272,7 @@ return [
     'loginPage' => 'Login Page',
     'loginModel' => 'Login Model',
     'generalTextPropertiesColor' => 'General Text Properties Color',
-    'ApkBuildHistory' => 'Build Apk',
+    'BuildDomainHistory' => 'Build Apk',
     'apkList' => 'Apk List',
     'themeSort' => 'Sort List',
     'BuildOrder' => 'Build Order',

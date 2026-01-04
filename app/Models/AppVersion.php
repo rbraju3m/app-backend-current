@@ -3,11 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AppVersion extends Model
 {
-    use HasFactory;
 
     protected $table = 'appfiy_app_versions';
     public $timestamps = false;

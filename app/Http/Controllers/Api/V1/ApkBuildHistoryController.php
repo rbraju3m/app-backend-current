@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Requests\BuildResponseRequest;
 use App\Http\Requests\FinalBuildRequest;
 use App\Jobs\ProcessBuild;
-use App\Models\ApkBuildHistory;
+use App\Models\BuildDomainHistory;
 use App\Models\BuildDomain;
 use App\Models\BuildOrder;
 use App\Models\Lead;
@@ -147,7 +147,7 @@ class ApkBuildHistoryController extends Controller
                     ];
                 }
 
-                return ApkBuildHistory::create($buildData);
+                return BuildDomainHistory::create($buildData);
             });
 
             // Dispatch job after transaction
