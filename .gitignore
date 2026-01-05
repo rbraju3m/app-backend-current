@@ -26,3 +26,10 @@ public/.htaccess
 /db
 storage/app/*
 storage/framework/*
+
+# Laravel Boost / AI tooling
+.mcp.json
+boost.json
+CLAUDE.md
+.junie/
+

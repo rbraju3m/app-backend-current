@@ -75,149 +75,6 @@ class ApkBuildResourceController extends Controller
         return $messages[$code] ?? $default;
     }
 
-
-    public function buildResource_bk(ApkBuildRequest $request){
-
-        $input = $request->validated();
-
-        $jsonResponse = function ($statusCode, $message, $additionalData = []) use ($request) {
-            return new JsonResponse(array_merge([
-                'status' => $statusCode,
-                'url' => $request->getUri(),
-                'method' => $request->getMethod(),
-                'message' => $message,
-            ], $additionalData), $statusCode);
-        };
-
-        if (!$this->authorization){
-            return $jsonResponse(Response::HTTP_UNAUTHORIZED, 'Unauthorized.');
-        }
-
-        if ($this->pluginName == 'lazy_task'){
-            return $jsonResponse(Response::HTTP_LOCKED, 'Build process off for lazy task.');
-        }
-
-        $siteUrl = $this->normalizeUrl($input["site_url"]);
-        $findSiteUrl = BuildDomain::where('site_url',$siteUrl)->where('license_key',$input['license_key'])->first();
-
-        if (!$findSiteUrl){
-            return $jsonResponse(Response::HTTP_NOT_FOUND, 'Domain Not found.');
-        }
-
-        if (!$findSiteUrl->fluent_item_id){
-            return $jsonResponse(Response::HTTP_NOT_FOUND, 'Item id not found.');
-        }
-
-        $activationHash = FluentLicenseInfo::where('license_key', $input['license_key'])->where('site_url', $siteUrl)->value('activation_hash');
-
-        if (is_null($activationHash)) {
-            return $this->jsonResponse($request, Response::HTTP_NOT_FOUND, 'License record not found for this site.');
-        }
-
-        $params = [
-            'fluent-cart' => 'check_license',
-            'license_key' => $input['license_key'],
-            'activation_hash' => $activationHash,
-            'item_id' => $findSiteUrl->fluent_item_id,
-            'site_url' => $siteUrl,
-        ];
-
-        // Send API Request
-        $getFluentInfo = FluentInfo::where('product_slug', $findSiteUrl->plugin_name)->where('is_active',true)->first();
-        if (!$getFluentInfo) {
-            return $jsonResponse(Response::HTTP_UNPROCESSABLE_ENTITY, 'The fluent information not set in the configuration.');
-        }
-
-        $fluentApiUrl = $getFluentInfo->api_url;
-        $response = Http::timeout(10)->get($fluentApiUrl, $params);
-
-        $response->onError(function (ConnectionException $exception) use ($jsonResponse, $request) {
-            return $jsonResponse(Response::HTTP_SERVICE_UNAVAILABLE, 'Could not connect to the license server.');
-        });
-
-        $data = $response->json();
-
-        if (!is_array($data) || !($data['success'] ?? false) || ($data['status'] ?? 'invalid') !== 'valid') {
-            $error = $data['error_type'] ?? $data['error'] ?? null;
-            $message = $this->getFluentErrorMessage($error, $data['message'] ?? 'License is not valid.');
-            return $jsonResponse(Response::HTTP_NOT_FOUND, $message);
-        }
-
-        // Upload Logo to R2
-        if (!empty($input['app_logo'])) {
-
-            $path = $this->uploadFromUrlToR2(
-                $input['app_logo'],
-                'app-file/logo',
-                'r2'
-            );
-
-            if (!$path) {
-                return $jsonResponse(Response::HTTP_BAD_REQUEST, 'App logo invalid or cannot be downloaded.');
-            }
-
-            $appLogo = config('app.image_public_path').$path;
-        }
-
-        // Upload Splash Screen to R2
-        if (!empty($input['app_splash_screen_image'])) {
-
-            $path = $this->uploadFromUrlToR2(
-                $input['app_splash_screen_image'],
-                'app-file/splash',
-                'r2'
-            );
-
-            if (!$path) {
-                return $jsonResponse(Response::HTTP_BAD_REQUEST, 'App splash invalid or cannot be downloaded.');
-            }
-
-            $splash_screen_image = config('app.image_public_path').$path;
-        }
-
-
-        $findAppVersion = AppVersion::where('is_active', 1)->latest()->first();
-
-        // First, extract the platform array from the request
-        $platforms = $request->input('platform', []);
-
-        // Set the boolean values based on whether the array contains these values
-        $isAndroid = in_array('android', $platforms);
-        $isIos = in_array('ios', $platforms);
-
-        $findSiteUrl->update([
-            'plugin_name' => $this->pluginName,
-            'version_id' => $findAppVersion->id,
-            'build_domain_id' => $findSiteUrl->id,
-            'fluent_id' => $findSiteUrl->fluent_item_id,
-            'app_name' => $request->input('app_name'),
-            'app_logo' => $appLogo,
-            'app_splash_screen_image' => $splash_screen_image,
-            'is_android' => $isAndroid,
-            'is_ios' => $isIos,
-            'confirm_email' => $request->input('email'),
-            'build_plugin_slug' => $request->input('plugin_slug'),
-        ]);
-
-        // for response
-        $status = Response::HTTP_OK;
-        $payload = [
-            'status' => $status,
-            'url' => $request->fullUrl(),
-            'method' => $request->method(),
-            'message' => 'App selection for build requests is confirmed.',
-            'data' => [
-                'package_name' => $findSiteUrl->package_name,
-                'bundle_name' => $findSiteUrl->package_name,
-            ]
-        ];
-        // Log the response
-//        Log::info("=============================================================================================================");
-//        Log::info('Build resource response:', ['status' => $status, 'response' => $payload,'payload' => $request->validated()]);
-        // Return it
-        return response()->json($payload, $status);
-    }
-
     public function buildResource(ApkBuildRequest $request)
     {
         $input = $request->validated();
@@ -381,7 +238,7 @@ class ApkBuildResourceController extends Controller
             ]
         );
     }
-    
+
     private function uploadFromUrlToR2(string $url, string $directory, string $disk = 'r2')
     {
         $fileHeaders = @get_headers($url);
@@ -413,8 +270,6 @@ class ApkBuildResourceController extends Controller
 
         return $path;
     }
-
-
 
     public function iosResourceAndVerify(IosBuildRequest $request)
     {
