@@ -382,7 +382,7 @@ class ApkBuildResourceController extends Controller
         );
     }
 
-    private function uploadFromUrlToR2(string $url, string $directory, string $disk = 'r2')
+    /*private function uploadFromUrlToR2(string $url, string $directory, string $disk = 'r2')
     {
         // Check URL valid or 404
         $fileHeaders = @get_headers($url);
@@ -406,7 +406,40 @@ class ApkBuildResourceController extends Controller
         Storage::disk($disk)->put($path, $fileContent);
 
         return $path; // return path for DB
+    }*/
+
+    private function uploadFromUrlToR2(string $url, string $directory, string $disk = 'r2')
+    {
+        // Validate URL
+        $fileHeaders = @get_headers($url);
+        if (!$fileHeaders || strpos($fileHeaders[0], '404') !== false) {
+            return false;
+        }
+
+        // Download file
+        $fileContent = @file_get_contents($url);
+        if ($fileContent === false) {
+            return false;
+        }
+
+        // 🔥 IMPORTANT: Remove query string safely
+        $parsedUrl = parse_url($url);
+        $originalFileName = basename($parsedUrl['path']); // NO ?hmac
+
+        // Generate clean unique filename
+        $fileName = bin2hex(random_bytes(5)) . '_' . $originalFileName;
+
+        $path = $directory . '/' . $fileName;
+
+        // Upload
+        Storage::disk($disk)->put($path, $fileContent, [
+            'visibility' => 'public',
+            'ContentType' => mime_content_type($originalFileName),
+        ]);
+
+        return $path;
     }
+
 
 
     public function iosResourceAndVerify(IosBuildRequest $request)
